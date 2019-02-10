@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700&subset=latin-ext');
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+button {
+    font-family: "Raleway", Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #DCDEDF;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+}
+
+button:focus {
+    outline: none;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+}
+
+textarea {
+    resize: none;
+    height: auto;
+    overflow: visible;
+}
+
+.header {
+    background-color: #3F4E51;
+    height: 10vh;
+}
+
+.header__title {
+    color: white;
+}
+
+.nav {
+    width: 20%;
+    height: 100%;
+}
+
+.nav__list {
+
+}
+
+.tasks {
+    width: 80%;
+    min-height: 90vh;
+    background-color: white;
+}
+
+.shadowbox {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.shadowbox__form {
+    background-color: white;
+    position: absolute;
+    top: 11vh;
+    left: 50%;
+    transform: translateX(-50%);
+    min-height: 20vh;
+    width: 500px;
+}
+
+.shadowbox__form__inputbox {
+    display: flex;
+}
+
+.shadowbox__form__inputbox__text {
+    width: calc(100% - 150px);
+}
+
+.shadowbox__form__inputbox__date {
+    width: 150px;
+}
+
+.button--add {
+    background-color: #3F4E51;
+    color: white;
+    height: 50px;
+    width: 50px;
+    font-size: 3rem;
+}
+
+.button--close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 20px;
+    width: 20px;
+    font-weight: bold;
+    color: #DCDEDF;
+    font-size: 1rem;
+}
+
+.button--close:hover {
+    color: #3F4E51;
+}
