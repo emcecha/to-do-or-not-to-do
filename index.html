@@ -4,25 +4,38 @@
     <meta charset="UTF-8">
     <title>CodersLab</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 <body>
 
     <header class="header">
-        <div class="container">
-            <h1 class="header__title">ToDoOrNotToDo</h1>
-            <button class="button button--create">+</button>
+        <div class="header__box container">
+            <h1 class="header__title">
+                ToDo<span class="header__break">OrNot</span>ToDo
+            </h1>
+            <div class="header__bar">
+                <form class="header__search">
+                    <input type="text" placeholder="Szukaj..." class="header__input">
+                    <button type="button" class="button button--search">
+                        <i class="fas fa-search" class="button__icon"></i>
+                    </button>
+                </form>
+                <button type="button" class="button button--create">
+                    <i class="fas fa-plus" class="button__icon"></i>
+                </button>
+            </div>
         </div>
     </header>
 
     <section class="container">
         <nav class="nav">
             <ul class="nav__list">
-                <li class="nav__list__item">Inbox</li>
-                <li class="nav__list__item">Zaległe</li>
-                <li class="nav__list__item">Dziś</li>
-                <li class="nav__list__item">7 dni</li>
-                <li class="nav__list__item">Kategorie</li>
+                <li class="nav__item">Inbox</li>
+                <li class="nav__item">Zaległe</li>
+                <li class="nav__item">Dziś</li>
+                <li class="nav__item">7 dni</li>
+                <li class="nav__item">Kategorie</li>
             </ul>
         </nav>
         <main class="tasks">
