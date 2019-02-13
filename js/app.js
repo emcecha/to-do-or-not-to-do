@@ -13,74 +13,56 @@ document.addEventListener("DOMContentLoaded", function () {
     var createButton = document.querySelector(".button--create");
     var body = document.querySelector("body");
     var tasksList = document.querySelector(".tasks__list");
+    var allTasksArr = [];
 
-    function createNewTaskForm() {
+    function createNewTaskForm(event) {
 
         var shadowBox = document.createElement("div");
         shadowBox.classList.add("shadowbox");
 
         var form = document.createElement("form");
-        form.classList.add("shadowbox__form");
+        form.classList.add("form");
         shadowBox.appendChild(form);
-    }
-
-
-    createButton.addEventListener("click", function () {
-
-
 
         var formTitle = document.createElement("h2");
-        formTitle.innerText = "Wpisz co i kiedy masz do zrobienia:"
-        formTitle.classList.add("shadowbox__form__title");
+        formTitle.innerText = "Wpisz co i kiedy:"
+        formTitle.classList.add("form__title");
         form.appendChild(formTitle);
 
         var inputBox = document.createElement("formfield");
-        inputBox.classList.add("shadowbox__form__inputbox");
+        inputBox.classList.add("form__inputbox");
         form.appendChild(inputBox);
 
         var taskTextInput = document.createElement("textarea");
-        taskTextInput.classList.add("shadowbox__form__inputbox__text");
+        taskTextInput.classList.add("form__text");
         inputBox.appendChild(taskTextInput);
         taskTextInput.addEventListener("input", resizeHeight);
 
         var taskDateInput = document.createElement("input");
         taskDateInput.type = "date";
-        taskDateInput.classList.add("shadowbox__form__inputbox__date");
+        taskDateInput.classList.add("form__date");
         inputBox.appendChild(taskDateInput);
 
-        var addButton = document.createElement("button");
-        addButton.classList.add("button");
-        addButton.classList.add("button--add");
-        addButton.type = "button";
-        addButton.innerText = "+";
-        form.appendChild(addButton);
-        addButton.addEventListener("click", function () {
+        var priorityThreeButton = document.createElement("button");
+        priorityThreeButton.classList.add("button");
+        priorityThreeButton.classList.add("button--priority-three");
+        priorityThreeButton.classList.add("fas");
+        priorityThreeButton.type = "button";
+        inputBox.appendChild(priorityThreeButton);
 
-            var taskTextInput = document.querySelector(".shadowbox__form__inputbox__text");
-            var taskDateInput = document.querySelector(".shadowbox__form__inputbox__date");
+        var priorityTwoButton = document.createElement("button");
+        priorityTwoButton.classList.add("button");
+        priorityTwoButton.classList.add("button--priority-two");
+        priorityTwoButton.classList.add("fas");
+        priorityTwoButton.type = "button";
+        inputBox.appendChild(priorityTwoButton);
 
-            if (taskTextInput.value.length > 0) {
-
-                var newTaskBox = document.createElement("li");
-                newTaskBox.classList.add("tasks__list__item");
-
-                var newTaskText = document.createElement("p");
-                newTaskText.classList.add("tasks__list__item__text");
-                newTaskText.innerText = taskTextInput.value;
-                newTaskBox.appendChild(newTaskText);
-
-                var newTaskDate = document.createElement("p");
-                newTaskDate.classList.add("tasks__list__item__date");
-                newTaskDate.innerText = taskDateInput.value;
-                console.log(new Date(taskDateInput.value).getTime());
-                newTaskBox.appendChild(newTaskDate);
-
-                tasksList.appendChild(newTaskBox);
-                deleteShadowBox();
-
-            }
-
-        });
+        var priorityOneButton = document.createElement("button");
+        priorityOneButton.classList.add("button");
+        priorityOneButton.classList.add("button--priority-one");
+        priorityOneButton.classList.add("fas");
+        priorityOneButton.type = "button";
+        inputBox.appendChild(priorityOneButton);
 
         var closeButton = document.createElement("button");
         closeButton.classList.add("button");
@@ -88,21 +70,101 @@ document.addEventListener("DOMContentLoaded", function () {
         closeButton.type = "button";
         closeButton.innerText = "x";
         form.appendChild(closeButton);
-        closeButton.addEventListener("click", deleteShadowBox);
+        closeButton.addEventListener("click", deleteNewTaskForm);
         body.appendChild(shadowBox);
 
-    })
+        var addButton = document.createElement("button");
+        addButton.classList.add("button");
+        addButton.classList.add("button--add");
+        addButton.type = "button";
+        addButton.innerText = "+";
+        form.appendChild(addButton);
+        addButton.addEventListener("click", addNewTaskObj)
+    }
 
+    function Task(id,content,date,finished) {
+
+        this.id = id;
+        this.content = content;
+        this.date = date;
+        this.finished = false;
+
+    }
+
+    function addNewTaskObj(event) {
+
+        var id = new Date().getTime();
+        var content = document.querySelector(".form__text").value;
+        var inputDate = document.querySelector(".form__date");
+        var date = new Date(inputDate.value);
+        var finished = false;
+
+        var newTask = new Task(id,content,date,finished);
+        allTasksArr.push(newTask);
+
+        sortTaskArrOnDate(allTasksArr);
+
+        createTaskList(allTasksArr);
+    }
+
+    function createTaskList(arr) {
+
+        for (var i = 0; i < arr.length; i++) {
+
+            var listItem = document.createElement("li");
+            listItem.classList.add("tasks__item");
+            listItem.dataset.id = arr[i].id;
+            tasksList.appendChild(listItem);
+
+            var taskText = document.createElement("p");
+            taskText.classList.add("tasks__text");
+            taskText.innerText = arr[i].content;
+            listItem.appendChild(taskText);
+
+            var taskDate = document.createElement("p");
+            taskDate.classList.add("tasks__date");
+            var dayNum = arr[i].date.getDate();
+            var monthNum = arr[i].date.getMonth();
+            taskDate.innerText = dayNum + " " + getMonthName(monthNum);
+            listItem.appendChild(taskDate);
+        }
+    }
+
+    function getMonthName(num) {
+
+        if (num === 0) {return "styczeń";}
+        if (num === 1) {return "luty";}
+        if (num === 2) {return "marzec";}
+        if (num === 3) {return "kwiecień";}
+        if (num === 4) {return "maj";}
+        if (num === 5) {return "czerwiec";}
+        if (num === 6) {return "lipiec";}
+        if (num === 7) {return "lipiec";}
+        if (num === 8) {return "sierpień";}
+        if (num === 9) {return "wrzesień";}
+        if (num === 10) {return "październik";}
+        if (num === 11) {return "listopad";}
+        if (num === 12) {return "grudzień";}
+
+    }
+
+    function sortTaskArrOnDate(arr) {
+        arr.sort(function (a,b) {
+            return a.date - b.date;
+        });
+    }
 
     function resizeHeight(event) {
         this.style.height = "auto";
         this.style.height = this.scrollHeight + 5 + "px";
-    };
+    }
 
-    function deleteShadowBox(event) {
+    function deleteNewTaskForm(event) {
         var shadowBox = document.querySelector(".shadowbox");
         body.removeChild(shadowBox);
     }
+
+    createButton.addEventListener("click", createNewTaskForm)
 
 
 

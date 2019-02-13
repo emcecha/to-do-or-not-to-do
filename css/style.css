@@ -12,6 +12,7 @@ button,
 input,
 textarea {
     font-family: "Raleway", Arial, sans-serif;
+    color: #3F4E51;
 }
 
 html {
@@ -33,6 +34,10 @@ textarea {
     overflow: visible;
 }
 
+.fas {
+    width: 25px;
+}
+
 .button {
     border: none;
     background-color: transparent;
@@ -42,6 +47,7 @@ textarea {
     font-size: 2rem;
     transition: all 200ms;
     cursor: pointer;
+    border: 3px solid white;
 }
 
 input:focus,
@@ -63,6 +69,35 @@ input:focus,
 
 .button--search {
     margin-left: 5px;
+}
+
+.button--priority-three,
+.button--priority-two,
+.button--priority-one {
+    position: relative;
+    border: 3px solid red;
+}
+
+.button--priority-three::before,
+.button--priority-two::before,
+.button--priority-one::before {
+    color: #3F4E51;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.button--priority-three::before {
+    content: "\f2cb";
+}
+
+.button--priority-two::before {
+    content: "\f2c9";
+}
+
+.button--priority-one::before {
+    content: "\f2c7";
 }
 
 .container {
@@ -131,12 +166,23 @@ input:focus,
     color: #3F4E51;
 }
 
-.nav {
+.aside {
     width: 20%;
-    height: 100%;
+    font-size: 2rem;
 }
 
 .nav__list {
+
+}
+
+.nav__item {
+    padding: 10px 0 10px 10px;
+    cursor: pointer;
+    transition: all 200ms;
+}
+
+.nav__item:hover {
+    background-color: white;
 
 }
 
@@ -154,25 +200,25 @@ input:focus,
     background-color: rgba(0,0,0,0.8);
 }
 
-.shadowbox__form {
+.form {
     background-color: white;
     position: absolute;
     top: 11vh;
     left: 50%;
     transform: translateX(-50%);
     min-height: 20vh;
-    width: 500px;
+    width: 600px;
 }
 
-.shadowbox__form__inputbox {
+.form__inputbox {
     display: flex;
 }
 
-.shadowbox__form__inputbox__text {
-    width: calc(100% - 150px);
+.form__text {
+    width: calc(100% - 150px - (3*40px + 3*5px));
 }
 
-.shadowbox__form__inputbox__date {
+.form__date {
     width: 150px;
 }
 
