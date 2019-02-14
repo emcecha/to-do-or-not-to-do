@@ -17,41 +17,61 @@
             <div class="header__bar">
                 <form class="header__search">
                     <input type="text" placeholder="Szukaj..." class="header__input">
-                    <button type="button" class="button button--search">
-                        <i class="fas fa-search" class="button__icon"></i>
+                    <button type="button" class="button button--light">
+                        <i class="fas fa-search"></i>
                     </button>
                 </form>
-                <button type="button" class="button button--create">
-                    <i class="fas fa-plus" class="button__icon"></i>
+                <button type="button" class="button button--light button--create">
+                    <i class="fas fa-plus"></i>
                 </button>
             </div>
         </div>
     </header>
 
     <section class="container">
+
         <aside class="aside">
             <nav class="nav">
                 <ul class="nav__list">
                     <li class="nav__item">
-                        <i class="fas fa-inbox"></i>Inbox
+                        <button type="button" class="button">
+                            <i class="fas fa-inbox"></i>
+                        </button>
+                        Inbox
                     </li>
                     <li class="nav__item">
-                        <i class="fas fa-radiation"></i>Zaległe
+                        <button type="button" class="button">
+                            <i class="fas fa-radiation"></i>
+                        </button>
+                        Zaległe
                     </li>
                     <li class="nav__item">
-                        <i class="fas fa-calendar-day"></i>Dziś
+                        <button type="button" class="button">
+                            <i class="fas fa-calendar-day"></i>
+                        </button>
+                        Dziś
                     </li>
                     <li class="nav__item">
-                        <i class="fas fa-calendar-week"></i>7 dni
+                        <button type="button" class="button">
+                            <i class="fas fa-calendar-week"></i>
+                        </button>
+                        7 dni
                     </li>
                 </ul>
             </nav>
+
             <div class="labels">
-                <h2 class="labels__header">Etykiety</h2>
+                <h2 class="labels__title">
+                    Etykiety
+                    <button type="button" class="button button--add-label">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </h2>
                 <ul class="labels__list">
 
                 </ul>
             </div>
+
         </aside>
 
         <main class="tasks">
@@ -59,7 +79,40 @@
 
             </ul>
         </main>
+
     </section>
+
+    <div class="shadowbox">
+
+        <form class="task-form">
+            <fieldset class="task-form__inputbox">
+                <legend class="task-form__title">Wpisz co i kiedy:</legend>
+                <textarea class="task-form__text" rows="1"></textarea>
+                <input type="date" class="task-form__date">
+                <div class="button button--labels">
+                    <i class="fas fa-tags"></i>
+                    <ul class="task-form__labels-list">
+
+                    </ul>
+                </div>
+                <div class="button button--priority button--priority-one">
+                    <i class="fas fa-thermometer-empty"></i>
+                    <div class="task-form__priority-list">
+                        <div class="button button--priority-one">
+                            <i class="fas fa-thermometer-empty"></i>
+                        </div>
+                        <div class="button button--priority-two">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="button button--priority-three">
+                            <i class="fas fa-thermometer-full"></i>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+    </div>
 
     <!-- <form class="newtask" action="index.html" method="post">
         <textarea name="name" rows="1" cols=""></textarea>
