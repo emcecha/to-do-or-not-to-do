@@ -21,7 +21,7 @@
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
-                <button type="button" class="button button--light button--create">
+                <button type="button" class="button button--light button--new-task">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
@@ -63,13 +63,11 @@
             <div class="labels">
                 <h2 class="labels__title">
                     Etykiety
-                    <button type="button" class="button button--add-label">
+                    <button type="button" class="button button--new-label">
                         <i class="fas fa-plus"></i>
                     </button>
                 </h2>
-                <ul class="labels__list">
 
-                </ul>
             </div>
 
         </aside>
@@ -85,15 +83,13 @@
     <div class="shadowbox">
 
         <form class="task-form">
-            <fieldset class="task-form__inputbox">
-                <legend class="task-form__title">Wpisz co i kiedy:</legend>
+            <h2 class="task-form__title">Wpisz co i kiedy:</h2>
+            <div class="task-form__inputbox">
                 <textarea class="task-form__text" rows="1"></textarea>
                 <input type="date" class="task-form__date">
-                <div class="button button--labels">
+                <div class="button button--label-picker">
                     <i class="fas fa-tags"></i>
-                    <ul class="task-form__labels-list">
-
-                    </ul>
+    
                 </div>
                 <div class="button button--priority button--priority-one">
                     <i class="fas fa-thermometer-empty"></i>
@@ -109,38 +105,41 @@
                         </div>
                     </div>
                 </div>
-            </fieldset>
+                <div class="button button--add-task">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+            <div class="button button--close">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="task-form__labels-box">
+                <h3 class="task-form__labels-title">Etykiety:</h3>
+
+            </div>
+        </form>
+
+        <form class="label-form">
+            <h2 class="label-form__title">Nazwij etykietę:</h2>
+            <div class="label-form__inputbox">
+                <div class="button button--color-picker">
+                    <i class="fas fa-paint-brush"></i>
+                    <div class="color-picker">
+
+                    </div>
+                </div>
+                <input type="text" class="label-form__text">
+
+
+                <div class="button button--add-label">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+            <div class="button button--close">
+                <i class="fas fa-times"></i>
+            </div>
         </form>
 
     </div>
-
-    <!-- <form class="newtask" action="index.html" method="post">
-        <textarea name="name" rows="1" cols=""></textarea>
-        <input type="date" name="" value="">
-        <input type="datalist" name="" value="">
-    </form> -->
-
-<!-- <input id="taskInput" placeholder="Place your task here"><br>
-<button id="addTaskButton">Add task</button>
-
-additional task
-Tasks to finish: <span id="counter"></span>
-
-
-<ul id="taskList">
-    <li>
-        <h1>Task 1</h1>
-        <button>Delete</button>
-        <button>Complete</button>
-    </li>
-    <li class="done">
-        <h1>Task 2</h1>
-        <button>Delete</button>
-        <button>Complete</button>
-    </li>
-</ul>
-
-<button id="removeFinishedTasksButton">Remove finished tasks</button> -->
 
 </body>
 </html>

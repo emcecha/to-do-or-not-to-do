@@ -1,105 +1,265 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // var addTaskButton = document.querySelector("#addTaskButton");
-    // var taskInput = document.querySelector("#taskInput");
-    //
-    // console.log(addTaskButton);
-    // console.log(taskInput);
-    //
-    // addTaskButton.addEventListener("click", function () {
-    //
-    // })
-
-    var formButton = document.querySelector(".button--create");
-    var labelsButton = document.querySelector(".button--labels");
     var body = document.querySelector("body");
+    var shadowbox = document.querySelector(".shadowbox");
+
+    var newTaskButton = document.querySelector(".button--new-task");
+    var newTaskForm = document.querySelector(".task-form");
+    var newTaskText = document.querySelector(".task-form__text");
+    var newTaskDate = document.querySelector(".task-form__date");
+    var pickLabelButton = document.querySelector(".button--label-picker");
+    var labelPicker = document.querySelector(".label-picker");
+    var pickedLabelsBox = document.querySelector(".task-form__labels-box");
+    var pickedLabelsList = document.querySelector(".task-labels");
+    var pickColorButton = document.querySelector(".button--color-picker");
+    var colorPicker = document.querySelector(".color-picker");
+    var selectPriorityButton = document.querySelector(".button--priority");
+    var priorityButtons = document.querySelector(".task-form__priority-list").children;
+    var priorityOneButton = document.querySelector(".button--priority-one");
+
+    var labelsDiv = document.querySelector(".labels");
+    var labelsList = document.querySelector(".labels__list");
+    var newLabelButton = document.querySelector(".button--new-label");
+    var newLabelForm = document.querySelector(".label-form");
+    var newLabelName = document.querySelector(".label-form__text");
+    var addLabelButton = document.querySelector(".button--add-label");
+
+    var closeButtons = document.querySelectorAll(".button--close");
+
     var tasksList = document.querySelector(".tasks__list");
     var labelsList = document.querySelector(".labels__list");
     var taskFormText = document.querySelector(".task-form__text");
+
     var allTasksArr = [];
     var labelsArr = [];
     var colorPalleteArr = ["#ee534f", "#ec407a", "#aa47bc", "#7e57c2", "#5c6bc0", "#42a5f6", "#28b6f6", "#25c6da", "#26a59a", "#66bb6a", "#9ccc66", "#d4e056", "#ffee58", "#ffc928", "#ffa827", "#ff7143", "#8c6e64", "#bdbdbd", "#78909c", "#546f7a"];
 
-    for (var i = 0; i < colorPalleteArr.length; i++) {
+    function showForm(event) {
 
-        var div = document.createElement("div");
-        tasksList.appendChild(div);
-        div.style.backgroundColor = colorPalleteArr[i];
-        div.style.width = "100px";
-        div.style.height = "100px";
-        div.style.display = "inline-block";
-        div.style.margin = "10px";
+        shadowbox.classList.add("visible");
+
+        if (this.className.indexOf("button--new-task") > -1) {
+            newTaskForm.classList.add("visible");
+        }
+
+        if (this.className.indexOf("button--new-label") > -1) {
+            newLabelForm.classList.add("visible");
+        }
     }
 
-    function createNewTaskForm(event) {
+    function hideForm(event) {
 
-        var shadowBox = createShadowbox();
+        shadowbox.classList.remove("visible");
 
-        var taskForm = document.createElement("form");
-        taskForm.classList.add("task-form");
-        shadowBox.appendChild(taskForm);
+        if (newTaskForm.className.indexOf("visible") > -1) {
 
-        var taskFormTitle = document.createElement("h2");
-        taskFormTitle.innerText = "Wpisz co i kiedy:";
-        taskFormTitle.classList.add("task-form__title");
-        taskForm.appendChild(taskFormTitle);
+            newTaskForm.classList.remove("visible");
 
-        var closeButton = createButton(taskForm);
-        closeButton.classList.add("button--close");
-        closeButton.classList.add("fas");
-        closeButton.addEventListener("click", deleteShadowBox);
-        closeButton.addEventListener("mouseover", setDarkButton);
-        closeButton.addEventListener("mouseout", resetDarkButton);
+            newTaskText.value = "";
+            newTaskDate.value = "";
 
-        var taskFormInputBox = document.createElement("formfield");
-        taskFormInputBox.classList.add("task-form__inputbox");
-        taskForm.appendChild(taskFormInputBox);
+            var iconClone = priorityButtons[0].firstElementChild.cloneNode(true);
+            var iconToReplace = selectPriorityButton.firstElementChild;
+            selectPriorityButton.replaceChild(iconClone, iconToReplace);
+            var priorityClassToRemove = selectPriorityButton.classList[2];
+            selectPriorityButton.classList.remove(priorityClassToRemove);
+            selectPriorityButton.classList.add("button--priority-one");
 
-        var taskFormTextInput = document.createElement("textarea");
-        taskFormTextInput.classList.add("task-form__text");
-        taskFormInputBox.appendChild(taskFormTextInput);
+            var pickedLabelsList = document.querySelector(".task-labels");
 
+            if (pickedLabelsList != null) {
+                pickedLabelsBox.removeChild(pickedLabelsList);
+                return pickedLabelsList;
+            }
+        }
 
-        var taskFormDateInput = document.createElement("input");
-        taskFormDateInput.type = "date";
-        taskFormDateInput.classList.add("task-form__date");
-        taskFormInputBox.appendChild(taskFormDateInput);
+        if (newLabelForm.className.indexOf("visible") > -1) {
 
-        var priorityThreeButton = document.createElement("button");
-        priorityThreeButton.classList.add("button");
-        priorityThreeButton.classList.add("button--priority-three");
-        priorityThreeButton.classList.add("fas");
-        priorityThreeButton.type = "button";
-        taskFormInputBox.appendChild(priorityThreeButton);
-
-        var priorityTwoButton = document.createElement("button");
-        priorityTwoButton.classList.add("button");
-        priorityTwoButton.classList.add("button--priority-two");
-        priorityTwoButton.classList.add("fas");
-        priorityTwoButton.type = "button";
-        taskFormInputBox.appendChild(priorityTwoButton);
-
-        var priorityOneButton = document.createElement("button");
-        priorityOneButton.classList.add("button");
-        priorityOneButton.classList.add("button--priority-one");
-        priorityOneButton.classList.add("fas");
-        priorityOneButton.type = "button";
-        taskFormInputBox.appendChild(priorityOneButton);
-
-        var addTaskButton = createButton(taskForm);
-        addTaskButton.classList.add("button--add");
-        addTaskButton.classList.add("fas");
-        addTaskButton.addEventListener("mouseover", setDarkButton);
-        addTaskButton.addEventListener("mouseout", resetDarkButton);
-        addTaskButton.addEventListener("click", addNewTaskObj)
-
+            newLabelForm.classList.remove("visible");
+            newLabelName.value = "";
+            pickColorButton.style.backgroundColor = "";
+        }
     }
 
-    function Task(id,content,date,finished) {
+    function createColorPicker() {
+
+        for (var i = 0; i < colorPalleteArr.length; i++) {
+
+            var color = document.createElement("div");
+            color.classList.add("color-picker__color");
+            color.style.backgroundColor = colorPalleteArr[i];
+            color.addEventListener("click", colorOnClick);
+            colorPicker.appendChild(color);
+        }
+    }
+
+    function colorOnClick(event) {
+
+        var selectedColor = this.style.backgroundColor;
+        pickColorButton.style.backgroundColor = selectedColor;
+    }
+
+    function Label(name,color) {
+
+        this.name = name;
+        this.color = color;
+    }
+
+    function addNewLabelObj(event) {
+
+        var name = newLabelName.value;
+
+        if (name === "") {
+            return;
+        }
+
+        var color = pickColorButton.style.backgroundColor;
+
+        if (color === "") {
+            return;
+        }
+
+        var newLabel = new Label(name,color);
+        labelsArr.push(newLabel);
+
+        sortLabelsArrOnName(labelsArr);
+        createLabelsList(labelsArr);
+        createLabelPicker();
+        hideForm();
+    }
+
+    function sortLabelsArrOnName(arr) {
+
+        arr.sort(function(a, b) {
+
+            var nameOne = a.name.toLowerCase();
+            var nameTwo = b.name.toLowerCase();
+
+            if (nameOne < nameTwo) {
+                return -1;
+            }
+
+            if (nameOne > nameTwo) {
+                return 1;
+            }
+
+            return 0;
+        });
+    }
+
+    function createLabelsList(arr) {
+
+        if (labelsList != null) {
+            labelsDiv.removeChild(labelsList);
+        }
+
+        labelsList = document.createElement("ul");
+        labelsList.classList.add("labels__list");
+        labelsDiv.appendChild(labelsList);
+
+        for (var i = 0; i < arr.length; i++) {
+
+            var listItem = document.createElement("li");
+            listItem.classList.add("labels__item");
+            labelsList.appendChild(listItem);
+
+            var itemColor = document.createElement("div");
+            itemColor.classList.add("labels__color");
+            itemColor.style.backgroundColor = arr[i].color;
+            listItem.appendChild(itemColor);
+
+            var itemName = document.createElement("p");
+            itemName.classList.add("labels__name");
+            itemName.innerText = arr[i].name;
+            listItem.appendChild(itemName);
+        }
+    }
+
+    function createLabelPicker() {
+
+        if (labelPicker != null) {
+            pickLabelButton.removeChild(labelPicker);
+        }
+
+        if (labelsList === null) {
+            return;
+        }
+
+        labelPicker = labelsList.cloneNode(true);
+        labelPicker.classList.add("label-picker");
+        labelPicker.classList.remove("labels__list");
+        pickLabelButton.appendChild(labelPicker);
+
+        for (var i = 0; i < labelPicker.children.length; i++) {
+
+            labelPicker.children[i].classList.add("label-picker__item");
+            labelPicker.children[i].classList.remove("labels__item");
+            labelPicker.children[i].addEventListener("click", addLabelToTask);
+
+            for (var j = 0; j < labelPicker.children[i].children.length; j++) {
+
+                labelPicker.children[i].children[0].classList.add("label-picker__color");
+                labelPicker.children[i].children[0].classList.remove("labels__color");
+
+                labelPicker.children[i].children[1].classList.add("label-picker__name");
+                labelPicker.children[i].children[1].classList.remove("labels__name");
+            }
+        }
+    }
+
+    function addLabelToTask(event) {
+
+        var pickedLabelsList = document.querySelector(".task-labels");
+
+        if (pickedLabelsList === null) {
+            pickedLabelsList = document.createElement("ul");
+            pickedLabelsList.classList.add("task-labels");
+            pickedLabelsBox.appendChild(pickedLabelsList);
+        }
+
+        var color = event.currentTarget.children[0].style.backgroundColor;
+        var name = event.currentTarget.children[1].innerText;
+
+        var pickedLabel = document.createElement("li");
+        pickedLabel.classList.add("task-labels__item");
+        pickedLabel.style.backgroundColor = color;
+        pickedLabel.innerText = name;
+        pickedLabelsList.appendChild(pickedLabel);
+
+        var removeLabelButton = document.createElement("span");
+        removeLabelButton.classList.add("task-labels__remove")
+        var closeIcon = closeButtons[0].firstElementChild.cloneNode(true);
+        removeLabelButton.addEventListener("click", removeListItem)
+        removeLabelButton.appendChild(closeIcon);
+        pickedLabel.appendChild(removeLabelButton);
+    }
+
+    function removeListItem(event) {
+        
+        var toDelete = this.parentElement;
+        toDelete.parentElement.removeChild(toDelete);
+    }
+
+    function selectTaskPriority(event) {
+
+        var priorityClassToRemove = selectPriorityButton.classList[2];
+        selectPriorityButton.classList.remove(priorityClassToRemove);
+
+        var priorityClassToAdd = this.classList[1];
+        selectPriorityButton.classList.add(priorityClassToAdd);
+
+        var iconClone = this.firstElementChild.cloneNode(true);
+        var iconToReplace = selectPriorityButton.firstElementChild;
+        selectPriorityButton.replaceChild(iconClone, iconToReplace);
+    }
+
+    function Task(id,content,date,arr,finished) {
 
         this.id = id;
         this.content = content;
         this.date = date;
+        this.labels = arr;
+        this.priority = 1;
         this.finished = false;
 
     }
@@ -116,10 +276,25 @@ document.addEventListener("DOMContentLoaded", function () {
         allTasksArr.push(newTask);
 
         sortTaskArrOnDate(allTasksArr);
-
         createTaskList(allTasksArr);
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function createTaskList(arr) {
 
@@ -173,26 +348,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function resizeHeight(event) {
 
-        this.style.height = "auto";
+        this.style.height = "45px";
         this.style.height = this.scrollHeight + 6 + "px";
 
     }
 
-    function deleteShadowBox(event) {
 
-        var shadowBox = document.querySelector(".shadowbox");
-        body.removeChild(shadowBox);
 
-    }
 
-    function createShadowbox() {
-
-        var shadowBox = document.createElement("div");
-        shadowBox.classList.add("shadowbox");
-        body.appendChild(shadowBox);
-        return shadowBox;
-
-    }
 
     function createButton(el) {
 
@@ -220,168 +383,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    function createNewLabelForm(event) {
 
-        var shadowBox = createShadowbox();
 
-        var labelForm = document.createElement("form");
-        labelForm.classList.add("label-form");
-        shadowBox.appendChild(labelForm);
 
-        var labelFormTitle = document.createElement("h2");
-        labelFormTitle.innerText = "Nazwij etykietę:";
-        labelFormTitle.classList.add("label-form__title");
-        labelForm.appendChild(labelFormTitle);
 
-        var labelFormInputBox = document.createElement("formfield");
-        labelFormInputBox.classList.add("label-form__inputbox");
-        labelForm.appendChild(labelFormInputBox);
 
-        var closeButton = createButton(labelForm);
-        closeButton.classList.add("button--close");
-        closeButton.classList.add("fas");
-        closeButton.addEventListener("click", deleteShadowBox);
-        closeButton.addEventListener("mouseover", setDarkButton);
-        closeButton.addEventListener("mouseout", resetDarkButton);
 
-        var pickColorButton = createButton(labelFormInputBox);
-        pickColorButton.classList.add("button--pick-color");
-        pickColorButton.classList.add("fas");
-        pickColorButton.addEventListener("mouseover", setDarkButton);
-        pickColorButton.addEventListener("mouseout", resetDarkButton);
-        pickColorButton.addEventListener("click", createColorPicker);
 
-        var labelFormInput = document.createElement("input");
-        labelFormInput.classList.add("label-form__text");
-        labelFormInput.type = "text";
-        labelFormInputBox.appendChild(labelFormInput);
-
-        var addLabelButton = createButton(labelFormInputBox);
-        addLabelButton.classList.add("button--add");
-        addLabelButton.classList.add("fas");
-        addLabelButton.addEventListener("mouseover", setDarkButton);
-        addLabelButton.addEventListener("mouseout", resetDarkButton);
-        addLabelButton.addEventListener("click", addNewLabelObj);
-
-    }
-
-    function createColorPicker(event) {
-
-        if (event.target != event.currentTarget) {
-            return;
-        }
-
-        if (this.className.indexOf("button--clicked") > 0) {
-
-            this.classList.remove("button--clicked");
-            this.removeChild(this.firstElementChild);
-            return;
-
-        } else {
-
-            this.classList.add("button--clicked");
-
-        }
-
-        var colorBox = document.createElement("div");
-        this.appendChild(colorBox);
-        colorBox.classList.add("label-form__color-box");
-
-        for (var i = 0; i < colorPalleteArr.length; i++) {
-
-            var color = document.createElement("div");
-            color.classList.add("label-form__color");
-            color.style.backgroundColor = colorPalleteArr[i];
-            color.addEventListener("click", colorOnClick);
-            colorBox.appendChild(color);
-
-        }
-
-    }
-
-    function colorOnClick(event) {
-
-        var selectedColor = this.style.backgroundColor;
-        var pickColorButton = this.parentElement.parentElement;
-
-        pickColorButton.style.backgroundColor = selectedColor;
-        pickColorButton.classList.remove("button--clicked");
-        pickColorButton.classList.remove("button--dark");
-
-        var toDelete = this.parentElement;
-        toDelete.parentElement.removeChild(toDelete);
-
-    }
-
-    function Label(name,color) {
-
-        this.name = name;
-        this.color = color;
-
-    }
-
-    function addNewLabelObj(event) {
-
-        var name = document.querySelector(".label-form__text").value;
-        var color = document.querySelector(".button--pick-color").style.backgroundColor;
-
-        var newLabel = new Label(name,color);
-        labelsArr.push(newLabel);
-
-        console.log(labelsArr);
-        sortLabelsArrOnName(labelsArr);
-        console.log(labelsArr);
-        createLabelList(labelsArr);
-
-    }
-
-    function sortLabelsArrOnName(arr) {
-
-        arr.sort(function(a, b) {
-
-            var nameOne = a.name.toLowerCase();
-            var nameTwo = b.name.toLowerCase();
-
-            if (nameOne < nameTwo) {
-                return -1;
-            }
-
-            if (nameOne > nameTwo) {
-                return 1;
-            }
-
-            return 0;
-
-        });
-
-    }
-
-    function createLabelList(arr) {
-
-        for (var i = 0; i < arr.length; i++) {
-
-            var listItem = document.createElement("li");
-            listItem.classList.add("labels__item");
-            labelsList.appendChild(listItem);
-
-            var itemColor = document.createElement("span");
-            console.log(itemColor);
-            itemColor.classList.add("labels__color");
-            itemColor.style.backgroundColor = arr[i].color;
-            listItem.appendChild(itemColor);
-
-            var itemName = document.createElement("p");
-            itemName.classList.add("labels__name");
-            itemName.innerText = arr[i].name;
-            listItem.appendChild(itemName);
-
-        }
-    }
 
 
     taskFormText.addEventListener("input", resizeHeight);
-    formButton.addEventListener("click", createNewTaskForm);
-    labelsButton.addEventListener("click", createNewLabelForm);
+    newTaskButton.addEventListener("click", showForm);
+
+    for (var i = 0; i < priorityButtons.length; i++) {
+        priorityButtons[i].addEventListener("click", selectTaskPriority);
+    }
+
+    newLabelButton.addEventListener("click", showForm);
+
+    for (var i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].addEventListener("click", hideForm);
+    }
+
+    createColorPicker();
+    addLabelButton.addEventListener("click", addNewLabelObj);
+    // formButton.addEventListener("click", createNewTaskForm);
+    // labelsButton.addEventListener("click", createNewLabelForm);
 
 
 
