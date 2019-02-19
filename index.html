@@ -17,13 +17,13 @@
             <div class="header__bar">
                 <form class="header__search">
                     <input type="text" placeholder="Szukaj..." class="header__input">
-                    <button type="button" class="button button--light">
+                    <div class="button-big button-big--mouseover">
                         <i class="fas fa-search"></i>
-                    </button>
+                    </div>
                 </form>
-                <button type="button" class="button button--light button--new-task">
+                <div class="button-big button-big--mouseover button-big--new-task">
                     <i class="fas fa-plus"></i>
-                </button>
+                </div>
             </div>
         </div>
     </header>
@@ -34,48 +34,56 @@
             <nav class="nav">
                 <ul class="nav__list">
                     <li class="nav__item">
-                        <button type="button" class="button">
+                        <div class="button-big">
                             <i class="fas fa-inbox"></i>
-                        </button>
-                        Inbox
+                        </div>
+                        <div class="nav__text">
+                            Inbox
+                        </div>
                     </li>
                     <li class="nav__item">
-                        <button type="button" class="button">
+                        <div class="button-big">
                             <i class="fas fa-radiation"></i>
-                        </button>
-                        Zaległe
+                        </div>
+                        <div class="nav__text">
+                            Zaległe
+                        </div>
                     </li>
                     <li class="nav__item">
-                        <button type="button" class="button">
+                        <div class="button-big">
                             <i class="fas fa-calendar-day"></i>
-                        </button>
-                        Dziś
+                        </div>
+                        <div class="nav__text">
+                            Dziś
+                        </div>
                     </li>
                     <li class="nav__item">
-                        <button type="button" class="button">
+                        <div class="button-big">
                             <i class="fas fa-calendar-week"></i>
-                        </button>
-                        7 dni
+                        </div>
+                        <div class="nav__text">
+                            7 dni
+                        </div>
                     </li>
                 </ul>
             </nav>
 
             <div class="labels">
-                <h2 class="labels__title">
-                    Etykiety
-                    <button type="button" class="button button--new-label">
+                <div class="labels__header">
+                    <h2 class="labels__title">
+                        Etykiety
+                    </h2>
+                    <div class="button-small button-small--new-label">
                         <i class="fas fa-plus"></i>
-                    </button>
-                </h2>
+                    </div>
+                </div>
 
             </div>
 
         </aside>
 
         <main class="tasks">
-            <ul class="tasks__list">
 
-            </ul>
         </main>
 
     </section>
@@ -87,29 +95,29 @@
             <div class="task-form__inputbox">
                 <textarea class="task-form__text" rows="1"></textarea>
                 <input type="date" class="task-form__date">
-                <div class="button button--label-picker">
+                <div class="button-big button-big--alt button-big--label-picker">
                     <i class="fas fa-tags"></i>
-    
+
                 </div>
-                <div class="button button--priority button--priority-one">
+                <div class="button-big button-big--alt button-big--priority button-big--priority-one">
                     <i class="fas fa-thermometer-empty"></i>
                     <div class="task-form__priority-list">
-                        <div class="button button--priority-one">
+                        <div class="button-big button-big--alt button-big--priority-one">
                             <i class="fas fa-thermometer-empty"></i>
                         </div>
-                        <div class="button button--priority-two">
+                        <div class="button-big button-big--alt button-big--priority-two">
                             <i class="fas fa-thermometer-half"></i>
                         </div>
-                        <div class="button button--priority-three">
+                        <div class="button-big button-big--alt button-big--priority-three">
                             <i class="fas fa-thermometer-full"></i>
                         </div>
                     </div>
                 </div>
-                <div class="button button--add-task">
+                <div class="button-big button-big--alt button-big--add-task">
                     <i class="fas fa-plus"></i>
                 </div>
             </div>
-            <div class="button button--close">
+            <div class="button-small button-small--close">
                 <i class="fas fa-times"></i>
             </div>
             <div class="task-form__labels-box">
@@ -121,7 +129,7 @@
         <form class="label-form">
             <h2 class="label-form__title">Nazwij etykietę:</h2>
             <div class="label-form__inputbox">
-                <div class="button button--color-picker">
+                <div class="button-big button-big--alt button-big--color-picker">
                     <i class="fas fa-paint-brush"></i>
                     <div class="color-picker">
 
@@ -130,11 +138,11 @@
                 <input type="text" class="label-form__text">
 
 
-                <div class="button button--add-label">
+                <div class="button-big button-big--alt button-big--add-label">
                     <i class="fas fa-plus"></i>
                 </div>
             </div>
-            <div class="button button--close">
+            <div class="button-small button-small--close">
                 <i class="fas fa-times"></i>
             </div>
         </form>
