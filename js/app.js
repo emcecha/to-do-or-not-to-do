@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var trashButton = document.createElement("div");
         trashButton.classList.add("button-small");
-        trashButton.addEventListener("click", removeLabelOrTask);
+        trashButton.addEventListener("click", buttonTrashOnClick);
         element.appendChild(trashButton);
 
         var trashIcon = document.createElement("i");
@@ -303,7 +303,6 @@ document.addEventListener("DOMContentLoaded", function () {
         this.labels = arr;
         this.priority = priority;
         this.finished = false;
-
     }
 
     function addNewTaskObj(event) {
@@ -484,7 +483,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function resizeHeight(event) {
 
         this.style.height = "45px";
-        this.style.height = this.scrollHeight + 6 + "px";
+        this.style.height = this.scrollHeight + 7 + "px";
     }
 
     function updateLocalStorage(key,object) {
@@ -493,56 +492,68 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem(key,objectString);
     }
 
-    function removeLabelOrTask(event) {
+    function buttonTrashOnClick(event) {
 
         var listItem = this.parentElement.parentElement;
         var id = listItem.dataset.id;
 
         if (listItem.className.indexOf("labels__item") > -1) {
-
-            for (var i = 0; i < labelsArr.length; i++) {
-
-                if (labelsArr[i].name === id) {
-
-                    labelsArr.splice(i,1);
-                    i = labelsArr.length;
-                }
-            }
-
-            for (var i = 0; i < allTasksArr.length; i++) {
-
-                for (var j = 0; j < allTasksArr[i].labels.length; j++) {
-
-                    if (id === allTasksArr[i].labels[j]) {
-
-                        allTasksArr[i].labels.splice(j,1);
-                    }
-                }
-            }
-
-            updateLocalStorage("labels",labelsArr);
-            createLabelsList(labelsArr);
-            createLabelPicker();
-            updateLocalStorage("tasks",allTasksArr);
-            createTaskList(allTasksArr);
+            removeLabel(id);
         }
 
         if (listItem.className.indexOf("tasks__item") > -1) {
-
-            for (var i = 0; i < allTasksArr.length; i++) {
-
-                if (allTasksArr[i].id == id) {
-
-                    allTasksArr.splice(i,1);
-                    i = allTasksArr.length;
-                }
-            }
-
-            updateLocalStorage("tasks",allTasksArr);
-            createTaskList(allTasksArr);
+            removeTask(id);
         }
 
-        listItem.parentElement.removeChild(listItem);
+        // listItem.parentElement.removeChild(listItem);
+    }
+
+    function removeLabel(id) {
+
+        for (var i = 0; i < labelsArr.length; i++) {
+
+            if (labelsArr[i].name === id) {
+
+                labelsArr.splice(i,1);
+                i = labelsArr.length;
+            }
+        }
+
+        for (var i = 0; i < allTasksArr.length; i++) {
+
+            for (var j = 0; j < allTasksArr[i].labels.length; j++) {
+
+                if (id === allTasksArr[i].labels[j]) {
+
+                    allTasksArr[i].labels.splice(j,1);
+                }
+            }
+        }
+
+        updateLocalStorage("labels",labelsArr);
+        createLabelsList(labelsArr);
+        createLabelPicker();
+        updateLocalStorage("tasks",allTasksArr);
+        createTaskList(allTasksArr);
+    }
+
+    function removeTask(id) {
+
+        for (var i = 0; i < allTasksArr.length; i++) {
+
+            if (allTasksArr[i].id == id) {
+
+                allTasksArr.splice(i,1);
+                i = allTasksArr.length;
+            }
+        }
+
+        updateLocalStorage("tasks",allTasksArr);
+        createTaskList(allTasksArr);
+    }
+
+    function editTaskOrLabelContent(event) {
+
     }
 
 
