@@ -204,6 +204,11 @@ i {
     border-color: #3F4E51;
 }
 
+.nav__item:hover .counter {
+    color: white;
+    background-color: #3F4E51;
+}
+
 .nav__text {
     padding-left: 7px;
 }
@@ -606,6 +611,22 @@ i {
 .button-big--add-label,
 .button-big--edit-label {
     display: none;
+}
+
+.counter {
+    width: 18px;
+    height: 18px;
+    padding-top: 3px;
+    border-radius: 50%;
+    background-color: white;
+    font-size: 1rem;
+    position: absolute;
+    top: -3px;
+    right: -9px;
+    transition: all 200ms;
+    text-align: center;
+    color: #3F4E51;
+    font-weight: bold;
 }
 
 .visible {
