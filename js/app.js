@@ -140,6 +140,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        for (var i = 0; i < labelsArr.length; i++) {
+
+            if (labelsArr[i].name.toLowerCase() === name.toLowerCase()) {
+                return;
+            }
+        }
+
         var color = pickColorButton.style.backgroundColor;
 
         if (color === "") {
@@ -276,7 +283,6 @@ document.addEventListener("DOMContentLoaded", function () {
             labelPickerName.innerText = labelsArr[i].name;
             labelPickerItem.appendChild(labelPickerName);
         }
-
     }
 
     function addLabelToTask(color,name) {
@@ -291,9 +297,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (this != window) {
 
-            if (this.className.indexOf("label-picker__item") > -1) {
-                var color = event.currentTarget.children[0].style.backgroundColor;
-                var name = event.currentTarget.children[1].innerText;
+            var color = this.children[0].style.backgroundColor;
+            var name = this.children[1].innerText;
+
+            for (var i = 0; i < pickedLabelsList.children.length; i++) {
+
+                if (pickedLabelsList.children[i].innerText === name) {
+                    return;
+                }
             }
         }
 
@@ -313,8 +324,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function removeListItem(event) {
 
-        var toDelete = this.parentElement;
-        toDelete.parentElement.removeChild(toDelete);
+        var item = this.parentElement;
+        var list = this.parentElement.parentElement;
+        item.parentElement.removeChild(item);
+
+        if (list.children.length === 0) {
+            list.parentElement.removeChild(list);
+        }
     }
 
     function selectTaskPriority(priority) {
@@ -367,6 +383,10 @@ document.addEventListener("DOMContentLoaded", function () {
         var id = new Date().getTime();
         var content = document.querySelector(".task-form__text").value;
 
+        if (content === "") {
+            return;
+        }
+
         var date = "";
         var inputDate = document.querySelector(".task-form__date");
 
@@ -402,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
         allTasksArr.push(newTask);
 
         sortTaskArrOnPriority(allTasksArr);
-        sortTaskArrOnDate(allTasksArr);
+        allTasksArr = sortTaskArrOnDate(allTasksArr);
         createTaskList(allTasksArr);
         updateLocalStorage("tasks",allTasksArr)
         hideForm();
@@ -439,6 +459,10 @@ document.addEventListener("DOMContentLoaded", function () {
             finishButton.classList.add("button-small");
             finishButton.classList.add("button-small--finish");
 
+            var finishIcon = document.createElement("i");
+            finishIcon.className = "fas fa-check";
+            finishButton.appendChild(finishIcon);
+
             if (arr[i].priority === 1) {
                 finishButton.classList.add("button-big--priority-one");
             }
@@ -468,12 +492,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             var taskDate = document.createElement("p");
             taskDate.classList.add("tasks__date");
-            var dayNum = new Date(arr[i].date).getDay();
-            var monthDayNum = new Date(arr[i].date).getDate();
-            var monthNum = new Date(arr[i].date).getMonth();
-            taskDate.innerText =
-                getDayName(dayNum) + ", " + monthDayNum + " " + getMonthName(monthNum);
-            dateEditBox.appendChild(taskDate);
+
+            if (arr[i].date != "") {
+
+                var dayNum = new Date(arr[i].date).getDay();
+                var monthDayNum = new Date(arr[i].date).getDate();
+                var monthNum = new Date(arr[i].date).getMonth();
+                taskDate.innerText =
+                    getDayName(dayNum) + ", " + monthDayNum + " " + getMonthName(monthNum);
+                dateEditBox.appendChild(taskDate);
+            }
 
             createEditButtons(dateEditBox);
 
@@ -538,11 +566,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function sortTaskArrOnDate(arr) {
 
-        arr.sort(function (a,b) {
+        var tasksWithDateArr = [];
+        var tasksWithoutDateArr = [];
+
+        for (var i = 0; i < arr.length; i++) {
+
+            if (arr[i].date != "") {
+                tasksWithDateArr.push(arr[i]);
+            }
+
+            if (arr[i].date === "") {
+                tasksWithoutDateArr.push(arr[i]);
+            }
+        }
+
+        tasksWithDateArr.sort(function (a,b) {
             var dateA = new Date(a.date).getTime();
             var dateB = new Date(b.date).getTime();
             return dateA - dateB;
         });
+
+        var sortedArr = tasksWithDateArr.concat(tasksWithoutDateArr);
+
+        return sortedArr;
     }
 
     function resizeHeight(event) {
@@ -795,7 +841,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         sortTaskArrOnPriority(allTasksArr);
-        sortTaskArrOnDate(allTasksArr);
+        allTasksArr = sortTaskArrOnDate(allTasksArr);
         createTaskList(allTasksArr);
         updateLocalStorage("tasks",allTasksArr)
         hideForm();
