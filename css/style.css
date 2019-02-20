@@ -61,6 +61,7 @@ i {
 .button-big {
     height: 45px;
     width: 45px;
+    min-width: 45px;
     border-radius: 50%;
     font-size: 2rem;
     position: relative;
@@ -89,6 +90,7 @@ i {
 .button-small {
     height: 25px;
     width: 25px;
+    min-width: 25px;
     color: #3F4E51;
     font-size: 1.5rem;
     border-radius: 50%;
@@ -210,7 +212,7 @@ i {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px 0;
+    padding: 5px 0;
 }
 
 .labels__title {
@@ -251,6 +253,8 @@ i {
 
 .labels__name {
     padding-left: 7px;
+    max-width: 115px;
+    overflow: hidden;
 }
 
 .tasks {
@@ -272,6 +276,10 @@ i {
     display: flex;
 }
 
+.tasks__text-label-box {
+    padding-left: 10px;
+}
+
 .button-small--finish {
     width: 20px;
     min-width: 20px;
@@ -285,7 +293,7 @@ i {
 
 .tasks__text {
     font-size: 1.4rem;
-    padding: 3px 0 5px 5px;
+    padding: 3px 0 5px;
     line-height: 1.4;
     max-width: 430px;
 }
@@ -300,7 +308,7 @@ i {
 
 .tasks__task-label-item {
     display: inline-block;
-    margin: 2px 0 2px 3px;
+    margin: 2px 3px 2px 0;
     padding: 4px 10px;
     border-radius: 30px;
     font-size: 1rem;
@@ -579,6 +587,11 @@ i {
     border: 3px solid #3F4E51;
 }
 
+.button-big--add-task,
+.button-big--edit-task {
+    display: none;
+}
+
 .label-form__text {
     height: 45px;
     border: 3px solid #3F4E51;
@@ -586,6 +599,11 @@ i {
     padding-left: 15px;
     width: 200px;
     margin: 5px 0 5px 5px;
+}
+
+.button-big--add-label,
+.button-big--edit-label {
+    display: none;
 }
 
 .visible {
