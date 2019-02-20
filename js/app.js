@@ -35,8 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var tasksList = document.querySelector(".tasks__list");
     var labelsList = document.querySelector(".labels__list");
+    var navItems = document.querySelectorAll(".nav__item");
 
     var allTasksArr = [];
+    var visibleTasksArr = [];
     var labelsArr = [];
     var colorPalleteArr = ["#ee534f", "#ec407a", "#aa47bc", "#7e57c2", "#5c6bc0", "#42a5f6", "#28b6f6", "#25c6da", "#26a59a", "#66bb6a", "#9ccc66", "#d4e056", "#ffee58", "#ffc928", "#ffa827", "#ff7143", "#8c6e64", "#bdbdbd", "#78909c", "#546f7a"];
 
@@ -203,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var listItem = document.createElement("li");
             listItem.classList.add("labels__item");
             listItem.dataset.id = arr[i].name;
+            listItem.addEventListener("click", showLabeledTasks)
             labelsList.appendChild(listItem);
 
             var colorNameBox = document.createElement("div");
@@ -847,6 +850,147 @@ document.addEventListener("DOMContentLoaded", function () {
         hideForm();
     }
 
+    function navItemOnClick() {
+
+        if (this.dataset.id === "inbox") {
+            showInboxTasks();
+        }
+
+        if (this.dataset.id === "late" ) {
+            showLateTasks();
+        }
+
+        if (this.dataset.id === "today") {
+            showTodayTasks();
+        }
+
+        if (this.dataset.id === "week") {
+            showWeekTasks();
+        }
+    }
+
+    function showInboxTasks() {
+
+        var inboxTasks = [];
+
+        for (var i = 0; i < allTasksArr.length; i++) {
+
+            if (allTasksArr[i].labels.length === 0) {
+                inboxTasks.push(allTasksArr[i]);
+            }
+        }
+
+        visibleTasksArr = inboxTasks
+        createTaskList(visibleTasksArr);
+    }
+
+    function showLateTasks() {
+
+        var lateTasks = [];
+        var todayRaw = new Date();
+        var today = roundDateToDay(todayRaw).getTime();
+
+        for (var i = 0; i < allTasksArr.length; i++) {
+
+            var taskDate = new Date(allTasksArr[i].date).getTime();
+
+            if (taskDate < today ) {
+                lateTasks.push(allTasksArr[i]);
+            }
+        }
+
+        visibleTasksArr = lateTasks;
+        createTaskList(visibleTasksArr);
+    }
+
+    function showTodayTasks() {
+
+        var todayTasks = [];
+        var todayRaw = new Date();
+        var today = roundDateToDay(todayRaw).getTime();
+
+        for (var i = 0; i < allTasksArr.length; i++) {
+
+            var taskDate = new Date(allTasksArr[i].date).getTime();
+
+            if (taskDate === today) {
+                todayTasks.push(allTasksArr[i]);
+            }
+        }
+
+        visibleTasksArr = todayTasks;
+        createTaskList(visibleTasksArr);
+    }
+
+    function showWeekTasks() {
+
+        var weekTasks = [];
+        var startWeekRaw = new Date();
+        var startWeek = roundDateToDay(startWeekRaw).getTime();
+        var endWeek = startWeek + 518400000;
+
+        for (var i = 0; i < allTasksArr.length; i++) {
+
+            var taskDate = new Date(allTasksArr[i].date).getTime();
+
+            if (taskDate >= startWeek && taskDate <= endWeek) {
+                weekTasks.push(allTasksArr[i]);
+            }
+        }
+
+        visibleTasksArr = weekTasks;
+        createTaskList(visibleTasksArr);
+    }
+
+    function roundDateToDay(dateObj) {
+
+        var yyyy = dateObj.getFullYear().toString();
+
+        var mm = (dateObj.getMonth() + 1).toString();
+
+        if (mm.length === 1) {
+            mm = "0" + mm;
+        }
+
+        var dd = dateObj.getDate().toString();
+
+        if (dd.length === 1) {
+            dd = "0" + dd;
+        }
+
+        var dateString = yyyy + "-" + mm + "-" + dd;
+        return new Date(dateString);
+    }
+
+    function showLabeledTasks() {
+
+        var labelName = this.dataset.id;
+        var labeledTasks = [];
+
+        for (var i = 0; i < allTasksArr.length; i++) {
+
+            for (var j = 0; j < allTasksArr[i].labels.length; j++) {
+
+                if (allTasksArr[i].labels[j] === labelName) {
+                    labeledTasks.push(allTasksArr[i]);
+                }
+            }
+        }
+
+        visibleTasksArr = labeledTasks;
+        createTaskList(visibleTasksArr);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     newTaskText.addEventListener("input", resizeHeight);
     newTaskButton.addEventListener("click", showForm);
@@ -866,6 +1010,10 @@ document.addEventListener("DOMContentLoaded", function () {
     editLabelButton.addEventListener("click", saveLabelChange);
     addTaskButton.addEventListener("click", addNewTaskObj);
     editTaskButton.addEventListener("click", saveTaskChange);
+
+    for (var i = 0; i < navItems.length; i++) {
+        navItems[i].addEventListener("click", navItemOnClick)
+    }
 
     if (localStorage.getItem("labels") === null) {
 
