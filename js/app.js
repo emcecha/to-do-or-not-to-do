@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var navItems = document.querySelectorAll(".nav__item");
     var navCounters = document.querySelectorAll(".counter--nav");
 
-    var target;
+    var todayNavItem = document.querySelector('[data-id="today"]');
+    var target = todayNavItem;
     var allTasksArr = [];
     var visibleTasksArr = [];
     var labelsArr = [];
@@ -443,8 +444,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function createTaskList(arr) {
-        console.log(1);
-        console.log(arr);
 
         if (allTasksArr.length === 0) {
             return;
@@ -660,6 +659,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (labelsArr.length === 0) {
             labelsList.parentElement.removeChild(labelsList);
             labelPicker.parentElement.removeChild(labelPicker);
+        }
+
+        if (target.className.indexOf("clicked") > -1) {
+            target = todayNavItem;
         }
 
         updateLocalStorage("labels",labelsArr);
@@ -886,7 +889,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (this != window) {
                 target = this;
             }
-            console.log(target);
+            
             if (target.dataset.id === "inbox") {showInboxTasks(true);}
             if (target.dataset.id === "late" ) {showLateTasks(true);}
             if (target.dataset.id === "today") {showTodayTasks(true);}
@@ -1093,7 +1096,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function highlightNavLabel(target) {
 
         var clickedBefore = document.querySelector(".clicked");
-        clickedBefore.classList.remove("clicked");
+
+        if (clickedBefore != null) {
+            clickedBefore.classList.remove("clicked");
+        }
         target.classList.add("clicked");
     }
 
@@ -1162,8 +1168,11 @@ document.addEventListener("DOMContentLoaded", function () {
         showTodayTasks(true);
     }
 
-    navItemOnClickOrUpdate();
+    navItemOnClickOrUpdate(false);
     updateLabeledTasks();
+
+    // localStorage.clear();
+    // console.log(localStorage);
 
 
 
