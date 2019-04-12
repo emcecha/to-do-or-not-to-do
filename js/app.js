@@ -36,7 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var tasksList = document.querySelector(".tasks__list");
     var labelsList = document.querySelector(".labels__list");
     var navItems = document.querySelectorAll(".nav__item");
+    var navCounters = document.querySelectorAll(".counter--nav");
 
+    var target;
     var allTasksArr = [];
     var visibleTasksArr = [];
     var labelsArr = [];
@@ -217,6 +219,12 @@ document.addEventListener("DOMContentLoaded", function () {
             itemColor.classList.add("button-big--label-color");
             itemColor.style.backgroundColor = arr[i].color;
             colorNameBox.appendChild(itemColor);
+
+            var counter = document.createElement("span");
+            counter.dataset.id = arr[i].name;
+            counter.classList.add("counter");
+            counter.classList.add("counter--label");
+            itemColor.appendChild(counter);
 
             var itemName = document.createElement("p");
             itemName.classList.add("labels__name");
@@ -426,12 +434,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         sortTaskArrOnPriority(allTasksArr);
         allTasksArr = sortTaskArrOnDate(allTasksArr);
-        createTaskList(allTasksArr);
-        updateLocalStorage("tasks",allTasksArr)
+        updateLocalStorage("tasks",allTasksArr);
+        navItemOnClickOrUpdate(true);
+        navItemOnClickOrUpdate(false);
+        updateLabeledTasks();
+        showLabeledTasks();
         hideForm();
     }
 
     function createTaskList(arr) {
+        console.log(1);
+        console.log(arr);
 
         if (allTasksArr.length === 0) {
             return;
@@ -608,6 +621,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function buttonTrashOnClick(event) {
 
+        event.stopPropagation();
+
         var listItem = this.parentElement.parentElement;
         var id = listItem.dataset.id;
 
@@ -651,7 +666,10 @@ document.addEventListener("DOMContentLoaded", function () {
         createLabelsList(labelsArr);
         createLabelPicker();
         updateLocalStorage("tasks",allTasksArr);
-        createTaskList(allTasksArr);
+        navItemOnClickOrUpdate(true);
+        navItemOnClickOrUpdate(false);
+        updateLabeledTasks();
+        showLabeledTasks();
     }
 
     function removeTask(id) {
@@ -670,10 +688,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         updateLocalStorage("tasks",allTasksArr);
-        createTaskList(allTasksArr);
+        navItemOnClickOrUpdate(true);
+        navItemOnClickOrUpdate(false);
+        updateLabeledTasks();
+        showLabeledTasks();
     }
 
     function buttonEditOnClick(event) {
+
+        event.stopPropagation();
 
         var listItem = this.parentElement.parentElement;
         var id = listItem.dataset.id;
@@ -743,7 +766,10 @@ document.addEventListener("DOMContentLoaded", function () {
         createLabelPicker();
         updateLocalStorage("labels",labelsArr);
         updateLocalStorage("tasks",allTasksArr);
-        createTaskList(allTasksArr);
+        navItemOnClickOrUpdate(true);
+        navItemOnClickOrUpdate(false);
+        updateLabeledTasks();
+        showLabeledTasks();
         hideForm();
     }
 
@@ -845,31 +871,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
         sortTaskArrOnPriority(allTasksArr);
         allTasksArr = sortTaskArrOnDate(allTasksArr);
-        createTaskList(allTasksArr);
-        updateLocalStorage("tasks",allTasksArr)
+        updateLocalStorage("tasks",allTasksArr);
+        navItemOnClickOrUpdate(true);
+        navItemOnClickOrUpdate(false);
+        updateLabeledTasks();
+        showLabeledTasks();
         hideForm();
     }
 
-    function navItemOnClick() {
+    function navItemOnClickOrUpdate(reCreate) {
 
-        if (this.dataset.id === "inbox") {
-            showInboxTasks();
-        }
+        if (this != window || reCreate === true) {
 
-        if (this.dataset.id === "late" ) {
-            showLateTasks();
-        }
+            if (this != window) {
+                target = this;
+            }
+            console.log(target);
+            if (target.dataset.id === "inbox") {showInboxTasks(true);}
+            if (target.dataset.id === "late" ) {showLateTasks(true);}
+            if (target.dataset.id === "today") {showTodayTasks(true);}
+            if (target.dataset.id === "week") {showWeekTasks(true);}
 
-        if (this.dataset.id === "today") {
-            showTodayTasks();
-        }
+            highlightNavLabel(target);
 
-        if (this.dataset.id === "week") {
-            showWeekTasks();
+        } else {
+
+            showInboxTasks(false);
+            showLateTasks(false);
+            showTodayTasks(false);
+            showWeekTasks(false);
+
         }
     }
 
-    function showInboxTasks() {
+    function updateNavCounter(arr,id) {
+
+        for (var i = 0; i < navCounters.length; i++) {
+
+            if (navCounters[i].dataset.id === id) {
+
+                navCounters[i].innerText = arr.length;
+
+                if (arr.length > 0) {
+                    navCounters[i].classList.add("visible");
+                } else {
+                    navCounters[i].classList.remove("visible");
+                }
+            }
+        }
+    }
+
+    function showInboxTasks(isChoice) {
 
         var inboxTasks = [];
 
@@ -880,11 +932,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        visibleTasksArr = inboxTasks
-        createTaskList(visibleTasksArr);
+        if (isChoice === true) {
+            visibleTasksArr = inboxTasks;
+            createTaskList(visibleTasksArr);
+        }
+
+        if (isChoice === false) {
+            updateNavCounter(inboxTasks,"inbox");
+        }
     }
 
-    function showLateTasks() {
+    function showLateTasks(isChoice) {
 
         var lateTasks = [];
         var todayRaw = new Date();
@@ -899,11 +957,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        visibleTasksArr = lateTasks;
-        createTaskList(visibleTasksArr);
+        if (isChoice === true) {
+            visibleTasksArr = lateTasks;
+            createTaskList(visibleTasksArr);
+        }
+
+        if (isChoice === false) {
+            updateNavCounter(lateTasks,"late");
+        }
     }
 
-    function showTodayTasks() {
+    function showTodayTasks(isChoice) {
 
         var todayTasks = [];
         var todayRaw = new Date();
@@ -918,11 +982,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        visibleTasksArr = todayTasks;
-        createTaskList(visibleTasksArr);
+        if (isChoice === true) {
+            visibleTasksArr = todayTasks;
+            createTaskList(visibleTasksArr);
+        }
+
+        if (isChoice === false) {
+            updateNavCounter(todayTasks,"today");
+        }
     }
 
-    function showWeekTasks() {
+    function showWeekTasks(isChoice) {
 
         var weekTasks = [];
         var startWeekRaw = new Date();
@@ -938,8 +1008,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        visibleTasksArr = weekTasks;
-        createTaskList(visibleTasksArr);
+        if (isChoice === true) {
+            visibleTasksArr = weekTasks;
+            createTaskList(visibleTasksArr);
+        }
+
+        if (isChoice === false) {
+            updateNavCounter(weekTasks,"week");
+        }
     }
 
     function roundDateToDay(dateObj) {
@@ -962,23 +1038,63 @@ document.addEventListener("DOMContentLoaded", function () {
         return new Date(dateString);
     }
 
-    function showLabeledTasks() {
+    function createLabeledTasksArray(id) {
 
-        var labelName = this.dataset.id;
-        var labeledTasks = [];
+        var labeledTasksArr = [];
 
         for (var i = 0; i < allTasksArr.length; i++) {
 
             for (var j = 0; j < allTasksArr[i].labels.length; j++) {
 
-                if (allTasksArr[i].labels[j] === labelName) {
-                    labeledTasks.push(allTasksArr[i]);
+                if (allTasksArr[i].labels[j] === id) {
+                    labeledTasksArr.push(allTasksArr[i]);
                 }
             }
         }
 
-        visibleTasksArr = labeledTasks;
+        return labeledTasksArr;
+    }
+
+    function showLabeledTasks() {
+
+        if (this != window) {
+            target = this;
+        }
+
+        if (target.className.indexOf("labels__item") === -1) {
+            return;
+        }
+
+        var id = target.dataset.id;
+
+        visibleTasksArr = createLabeledTasksArray(id);
         createTaskList(visibleTasksArr);
+        highlightNavLabel(target);
+    }
+
+    function updateLabeledTasks() {
+
+        var labelsCounters = document.querySelectorAll(".counter--label");
+
+        for (var i = 0; i < labelsCounters.length; i++) {
+
+            var id = labelsCounters[i].dataset.id;
+            var arr = createLabeledTasksArray(id);
+            labelsCounters[i].innerText = arr.length;
+
+            if (arr.length > 0) {
+                labelsCounters[i].classList.add("visible");
+            } else {
+                labelsCounters[i].classList.remove("visible");
+            }
+        }
+    }
+
+    function highlightNavLabel(target) {
+
+        var clickedBefore = document.querySelector(".clicked");
+        clickedBefore.classList.remove("clicked");
+        target.classList.add("clicked");
     }
 
 
@@ -1012,7 +1128,7 @@ document.addEventListener("DOMContentLoaded", function () {
     editTaskButton.addEventListener("click", saveTaskChange);
 
     for (var i = 0; i < navItems.length; i++) {
-        navItems[i].addEventListener("click", navItemOnClick)
+        navItems[i].addEventListener("click", navItemOnClickOrUpdate)
     }
 
     if (localStorage.getItem("labels") === null) {
@@ -1043,10 +1159,11 @@ document.addEventListener("DOMContentLoaded", function () {
             allTasksArr = [];
         }
 
-        createTaskList(allTasksArr);
+        showTodayTasks(true);
     }
 
-
+    navItemOnClickOrUpdate();
+    updateLabeledTasks();
 
 
 

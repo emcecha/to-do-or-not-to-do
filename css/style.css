@@ -256,6 +256,11 @@ i {
     border: 3px solid #3F4E51;
 }
 
+.labels__item:hover .counter {
+    background-color: #3F4E51;
+    color: white;
+}
+
 .labels__name {
     padding-left: 7px;
     max-width: 115px;
@@ -627,8 +632,27 @@ i {
     text-align: center;
     color: #3F4E51;
     font-weight: bold;
+    display: none;
 }
 
 .visible {
     display: block;
+}
+
+.nav__item.clicked,
+.labels__item.clicked {
+    background-color: white;
+    color: #3F4E51;
+}
+
+.nav__item.clicked .button-big,
+.labels__item.clicked .button-big {
+    border: 3px solid #3F4E51;
+    color: #3F4E51;
+}
+
+.nav__item.clicked .counter,
+.labels__item.clicked .counter {
+    background-color: #3F4E51;
+    color: white;
 }
