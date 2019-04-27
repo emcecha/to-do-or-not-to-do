@@ -236,20 +236,23 @@ document.addEventListener("DOMContentLoaded", function () {
             editBox.classList.add("labels__right-box");
             listItem.appendChild(editBox);
 
-            createEditButtons(editBox,labelsList);
+            createEditButtons(editBox,true);
         }
     }
 
-    function createEditButtons(element) {
+    function createEditButtons(element,isFinished) {
 
-        var editButton = document.createElement("div");
-        editButton.classList.add("button-small");
-        editButton.addEventListener("click", buttonEditOnClick);
-        element.appendChild(editButton);
+        if (isFinished) {
 
-        var editIcon = document.createElement("i");
-        editIcon.className = "fas fa-pencil-alt";
-        editButton.appendChild(editIcon);
+            var editButton = document.createElement("div");
+            editButton.classList.add("button-small");
+            editButton.addEventListener("click", buttonEditOnClick);
+            element.appendChild(editButton);
+
+            var editIcon = document.createElement("i");
+            editIcon.className = "fas fa-pencil-alt";
+            editButton.appendChild(editIcon);
+        }
 
         var trashButton = document.createElement("div");
         trashButton.classList.add("button-small");
@@ -472,10 +475,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             var finishButton = document.createElement("div");
             finishButton.classList.add("button-small");
-            finishButton.classList.add("button-small--finish");
+
+            if (arr[i].finished) {
+                finishButton.classList.add("button-small--finished");
+            } else {
+                finishButton.classList.add("button-small--finish")
+            }
 
             var finishIcon = document.createElement("i");
             finishIcon.className = "fas fa-check";
+            finishButton.addEventListener("click", buttonFinishOnClick)
             finishButton.appendChild(finishIcon);
 
             if (arr[i].priority === 1) {
@@ -889,11 +898,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (this != window) {
                 target = this;
             }
-            
+
             if (target.dataset.id === "inbox") {showInboxTasks(true);}
             if (target.dataset.id === "late" ) {showLateTasks(true);}
             if (target.dataset.id === "today") {showTodayTasks(true);}
             if (target.dataset.id === "week") {showWeekTasks(true);}
+            if (target.dataset.id === "finished") {showFinishedTasks(true);}
 
             highlightNavLabel(target);
 
@@ -903,7 +913,7 @@ document.addEventListener("DOMContentLoaded", function () {
             showLateTasks(false);
             showTodayTasks(false);
             showWeekTasks(false);
-
+            showFinishedTasks(false);
         }
     }
 
@@ -930,8 +940,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (var i = 0; i < allTasksArr.length; i++) {
 
-            if (allTasksArr[i].labels.length === 0) {
-                inboxTasks.push(allTasksArr[i]);
+            if (allTasksArr[i].finished === false) {
+
+                if (allTasksArr[i].labels.length === 0) {
+                    inboxTasks.push(allTasksArr[i]);
+                }
             }
         }
 
@@ -953,10 +966,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (var i = 0; i < allTasksArr.length; i++) {
 
-            var taskDate = new Date(allTasksArr[i].date).getTime();
+            if (allTasksArr[i].finished === false) {
 
-            if (taskDate < today ) {
-                lateTasks.push(allTasksArr[i]);
+                var taskDate = new Date(allTasksArr[i].date).getTime();
+
+                if (taskDate < today ) {
+                    lateTasks.push(allTasksArr[i]);
+                }
             }
         }
 
@@ -978,10 +994,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (var i = 0; i < allTasksArr.length; i++) {
 
-            var taskDate = new Date(allTasksArr[i].date).getTime();
+            if (allTasksArr[i].finished === false) {
 
-            if (taskDate === today) {
-                todayTasks.push(allTasksArr[i]);
+                var taskDate = new Date(allTasksArr[i].date).getTime();
+
+                if (taskDate === today) {
+                    todayTasks.push(allTasksArr[i]);
+                }
             }
         }
 
@@ -1004,10 +1023,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (var i = 0; i < allTasksArr.length; i++) {
 
-            var taskDate = new Date(allTasksArr[i].date).getTime();
+            if (allTasksArr[i].finished === false) {
 
-            if (taskDate >= startWeek && taskDate <= endWeek) {
-                weekTasks.push(allTasksArr[i]);
+                var taskDate = new Date(allTasksArr[i].date).getTime();
+
+                if (taskDate >= startWeek && taskDate <= endWeek) {
+                    weekTasks.push(allTasksArr[i]);
+                }
             }
         }
 
@@ -1018,6 +1040,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (isChoice === false) {
             updateNavCounter(weekTasks,"week");
+        }
+    }
+
+    function showFinishedTasks(isChoice) {
+
+        var finishedTasks = [];
+
+        for (var i = 0; i < allTasksArr.length; i++) {
+
+            if (allTasksArr[i].finished === true) {
+                finishedTasks.push(allTasksArr[i]);
+            }
+        }
+
+        if (isChoice === true) {
+            visibleTasksArr = finishedTasks;
+            createTaskList(finishedTasks);
+        }
+
+        if (isChoice === false) {
+            updateNavCounter(finishedTasks,"finished");
         }
     }
 
@@ -1047,10 +1090,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (var i = 0; i < allTasksArr.length; i++) {
 
-            for (var j = 0; j < allTasksArr[i].labels.length; j++) {
+            if (allTasksArr[i].finished === false) {
 
-                if (allTasksArr[i].labels[j] === id) {
-                    labeledTasksArr.push(allTasksArr[i]);
+                for (var j = 0; j < allTasksArr[i].labels.length; j++) {
+
+                    if (allTasksArr[i].labels[j] === id) {
+                        labeledTasksArr.push(allTasksArr[i]);
+                    }
                 }
             }
         }
@@ -1103,12 +1149,39 @@ document.addEventListener("DOMContentLoaded", function () {
         target.classList.add("clicked");
     }
 
+    function buttonFinishOnClick(event) {
 
+        event.stopPropagation();
 
+        var listItem = this.parentElement.parentElement;
+        var id = listItem.dataset.id;
 
+        finishTask(id);
+    }
 
+    function finishTask(id) {
+        console.log(id);
 
+        for (var i = 0; i < allTasksArr.length; i++) {
 
+            if (allTasksArr[i].id == id) {
+
+                if (allTasksArr[i].finished) {
+                    allTasksArr[i].finished = false;
+                } else {
+                    allTasksArr[i].finished = true;
+                }
+
+                i = allTasksArr.length;
+            }
+        }
+
+        updateLocalStorage("tasks",allTasksArr);
+        navItemOnClickOrUpdate(true);
+        navItemOnClickOrUpdate(false);
+        updateLabeledTasks();
+        showLabeledTasks();
+    }
 
 
 
