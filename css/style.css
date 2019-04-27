@@ -432,6 +432,38 @@ i {
     font-size: 1rem;
 }
 
+.button-big--priority-one.button-small--finished {
+    background-color: #7690AC;
+    border: solid 3px #7690AC;
+    color: white;
+}
+
+.button-big--priority-two.button-small--finished {
+    background-color: #FF7619;
+    border: solid 3px #FF7619;
+    color: white;
+}
+
+.button-big--priority-three.button-small--finished {
+    background-color: #CF3D32;
+    border: solid 3px #CF3D32;
+    color: #CF3D32;
+}
+
+.button-big--priority-three.button-small--finished:hover,
+.button-big--priority-one.button-small--finished:hover,
+.button-big--priority-two.button-small--finished:hover {
+    background-color: white;
+    color: white;
+}
+
+.button-small--finished {
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    font-size: 1rem;
+}
+
 .task-form__text {
     width: 300px;
     border-radius: 30px;
