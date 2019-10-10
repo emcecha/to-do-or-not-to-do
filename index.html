@@ -9,6 +9,18 @@
 </head>
 <body>
 
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId            : '116593199748439',
+                autoLogAppEvents : true,
+                xfbml            : true,
+                version          : 'v4.0'
+            });
+        };
+    </script>
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+
     <header class="header">
         <div class="header__box container">
             <h1 class="header__title">
@@ -168,25 +180,8 @@
 
     </div>
     <div class="fb-customerchat"
-         page_id="116593199748439"
-         minimized="true">
+         page_id="116593199748439">
     </div>
-    <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId            : '116593199748439',
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : 'v2.11'
-            });
-        };
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
+
 </body>
 </html>
